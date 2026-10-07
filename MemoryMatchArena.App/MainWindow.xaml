@@ -1,0 +1,173 @@
+﻿<Window x:Class="MemoryMatchArena.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Memory Match Arena"
+        Width="1440" Height="960" MinWidth="1120" MinHeight="780"
+        WindowStartupLocation="CenterScreen"
+        Background="#EEF3F0"
+        FontFamily="Segoe UI">
+    <Window.Resources>
+        <Style x:Key="CardButton" TargetType="Button">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Surface" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Surface" Property="Opacity" Value="0.84" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Surface" Property="Opacity" Value="0.72" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Surface" Property="Opacity" Value="1" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Surface" Property="BorderBrush" Value="#F07858" />
+                                <Setter TargetName="Surface" Property="BorderThickness" Value="2" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Height" Value="48" />
+            <Setter Property="Background" Value="#F07858" />
+            <Setter Property="Foreground" Value="#182D29" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="16,0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#D76B5D" />
+            <Setter Property="Foreground" Value="#F7F3F1" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="292" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="#173B36" Padding="30,32">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Ellipse Width="10" Height="10" Fill="#F07858" Margin="0,0,10,0" />
+                        <TextBlock Text="MEMORY / MATCH" Foreground="#B7CBC3" FontSize="11" FontWeight="Bold" />
+                    </StackPanel>
+                    <TextBlock Text="ARENA" Foreground="#F4F7F4" FontSize="31" FontWeight="Bold" Margin="0,12,0,0" />
+                    <TextBlock Text="COLOR STUDY  /  01" Foreground="#81A69B" FontSize="10" FontWeight="Bold" Margin="1,3,0,0" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Margin="0,45,0,0">
+                    <TextBlock Text="PLAYER" Foreground="#9DB8AE" FontSize="10" FontWeight="Bold" />
+                    <TextBox x:Name="PlayerNameTextBox" Text="Player One" TextChanged="PlayerNameTextChanged"
+                             Margin="0,10,0,0" Height="40" Padding="11,8"
+                             Background="#214942" Foreground="#F4F7F4" CaretBrush="#F07858"
+                             BorderThickness="0" FontSize="14" VerticalContentAlignment="Center" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Margin="0,42,0,0">
+                    <TextBlock Text="SESSION" Foreground="#9DB8AE" FontSize="10" FontWeight="Bold" />
+                    <Grid Margin="0,17,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="PAIRS FOUND" Foreground="#9DB8AE" FontSize="9" FontWeight="Bold" />
+                            <TextBlock x:Name="MatchesTextBlock" Text="00 / 08" Foreground="#F4F7F4" FontSize="26" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="MOVES" Foreground="#9DB8AE" FontSize="9" FontWeight="Bold" />
+                            <TextBlock x:Name="MovesTextBlock" Text="00" Foreground="#F4F7F4" FontSize="26" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Grid>
+                    <Border Height="1" Background="#365B53" Margin="0,22,0,20" />
+                    <TextBlock Text="TIME" Foreground="#9DB8AE" FontSize="9" FontWeight="Bold" />
+                    <TextBlock x:Name="TimerTextBlock" Text="00:00" Foreground="#F4F7F4" FontSize="23" FontWeight="SemiBold" Margin="0,5,0,0" />
+                    <TextBlock Text="BOARD SIZE" Foreground="#9DB8AE" FontSize="9" FontWeight="Bold" Margin="0,28,0,9" />
+                    <ComboBox x:Name="GridSizeSelector" SelectedIndex="0" Height="38" Padding="8,4"
+                              Background="#214942" Foreground="#173B36" FontSize="13">
+                        <ComboBoxItem Content="Level 1 • 4 × 4 • 16 cards" Tag="4" />
+                        <ComboBoxItem Content="Level 2 • 6 × 6 • 36 cards" Tag="6" />
+                        <ComboBoxItem Content="Level 3 • 8 × 8 • 64 cards" Tag="8" />
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="3">
+                    <TextBlock x:Name="GameStatusTextBlock" Text="Ready when you are." Foreground="#D3E2DB"
+                               FontSize="12" TextWrapping="Wrap" Margin="0,0,0,15" />
+                    <Button x:Name="NewGameButton" Content="RESTART LEVEL" Style="{StaticResource PrimaryButton}" Click="NewGameClicked" Margin="0,0,0,10" />
+                    <Button x:Name="ExitGameButton" Content="EXIT GAME" Style="{StaticResource DangerButton}" Click="ExitGameClicked" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="1" Margin="38,32,38,32">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,2,0,22">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="THE COLOR GRID" Foreground="#54736B" FontSize="10" FontWeight="Bold" />
+                    <TextBlock Text="Find your rhythm." Foreground="#183B35" FontSize="29" FontWeight="SemiBold" Margin="0,5,0,0" />
+                </StackPanel>
+                <Border Grid.Column="1" Background="#DCE8E2" CornerRadius="5" Padding="13,9" VerticalAlignment="Center">
+                    <TextBlock x:Name="PlayerDisplayTextBlock" Text="PLAYER ONE" Foreground="#28574D" FontSize="10" FontWeight="Bold" />
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="1" Background="#E4ECE7" CornerRadius="10" Padding="12">
+                <UniformGrid x:Name="CardGrid" Rows="4" Columns="4" />
+            </Border>
+
+            <Grid Grid.Row="2" Margin="0,17,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Ellipse Width="8" Height="8" Fill="#F07858" VerticalAlignment="Center" Margin="0,0,8,0" />
+                <TextBlock x:Name="BoardHintTextBlock" Grid.Column="1" Text="A fresh palette is on the table." Foreground="#54736B" FontSize="11" VerticalAlignment="Center" />
+                <TextBlock x:Name="BoardProgressTextBlock" Grid.Column="2" Text="08 PAIRS" Foreground="#54736B" FontSize="10" FontWeight="Bold" VerticalAlignment="Center" />
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
